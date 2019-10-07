@@ -1,0 +1,125 @@
+steps:
+- id: clean
+  desc: |
+    Clear all patients.
+  POST: /$sql
+  body: |
+    truncate patient;
+    truncate encounter;
+    truncate organization;
+  match:
+    status: 200
+
+- id: prerequisites
+  desc: |
+    Upload patients, encounters & organizations.
+  PUT: /
+  body:
+
+  - id: org-1
+    resourceType: Organization
+    name: iBolit & Co.
+    type:
+    - text: Healtcare provider
+  - id: org-2
+    resourceType: Organization
+    name: Arkham Asylum
+    type:
+    - text: Healtcare provider
+
+  - id: pt-1
+    resourceType: Patient
+    name: [{given: [Vlad], family: Ganshin}]
+    birthDate: '1994-09-26'
+    address: [{city: St. Petersburg}]
+    gender: male
+    text:
+      status: additional
+      div: Healthy Patient
+    managingOrganization:
+      id: org-1
+      resourceType: Organization
+
+  - id: pt-2
+    resourceType: Patient
+    name: [{given: [Anna], family: Chu}]
+    birthDate: '1994-08-07'
+    address: [{city: Kolpino}]
+    gender: female
+    text:
+      status: additional
+      div: Unknown
+    managingOrganization:
+      id: org-1
+      resourceType: Organization
+  - id: enc-1
+    resourceType: Encounter
+    status: planned
+    subject:
+      id: pt-2
+      resourceType: Patient
+
+  - id: pt-3
+    resourceType: Patient
+    name: [{given: [Ivan], family: Shilov}]
+    address: [{city: Pushkin}]
+    gender: male
+    birthDate: '1994-05-01'
+    text:
+      status: additional
+      div: In progress
+    managingOrganization:
+      id: org-2
+      resourceType: Organization
+
+  - id: pt-4
+    resourceType: Patient
+    name: [{given: [Victor], family: Sidorov}]
+    address: [{city: Pavlovsk}]
+    gender: male
+    birthDate: '1990-02-01'
+    text:
+      status: additional
+      div: Old
+  - id: enc-2
+    resourceType: Encounter
+    status: finished
+    subject:
+      id: pt-4
+      resourceType: Patient
+  - id: enc-3
+    resourceType: Encounter
+    status: arrived
+    subject:
+      id: pt-4
+      resourceType: Patient
+  match:
+    status: 200
+
+- id: create-search-query
+  desc: |
+    Create SearchQuery resource to look for young Patients
+    and with such params as gender and family.
+  PUT: /SearchQuery/q-1
+  body:
+    # attach this query to Patient resource type
+    resource: {id: 'Patient', resourceType: 'Entity'}
+    # give alias to patient table
+    as: pt
+    # enable total query
+    total: true 
+    # basic query
+    query:
+      where: "(pt.resource->>'birthDate')::date > '1994-01-01'"
+      order-by: pt.id desc
+    params:
+      gender:
+        type: string
+        where: "pt.resource->>'gender' = {{params.gender}}"
+      family:
+        type: string
+        format: '%?%'
+        where: |
+          aidbox_text_search(knife_extract_text(pt.resource, $$[["name","family"]]$$)) ilike {{params.family}}
+  match:
+    status: 2xx?
