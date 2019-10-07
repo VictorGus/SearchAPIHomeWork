@@ -8,7 +8,7 @@ steps:
       birthDate: '1994-09-26'
       address: [{city: St. Petersburg}]
 - id: find-patient-by-year-of-birth
-  GET: /Patient?_content=1994
+  GET: /Patient #Здесь должен быть ваш запрос
   match:
   status: 200
   body:
