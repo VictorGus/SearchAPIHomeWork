@@ -12,7 +12,7 @@ steps:
       id: pt-1
       name: [{given: ['Ivan']}]
 - id: search-by-id
-  GET: /Patient?_id=pt-1
+  GET: /Patient #Здесь должен быть ваш запрос
   match:
     status: 200
     body:
