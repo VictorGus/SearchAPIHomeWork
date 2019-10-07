@@ -1,0 +1,78 @@
+steps:
+- id: create
+  PUT: /
+  body:
+  - id: pt-1
+    resourceType: Patient
+    name: [{given: [Vlad], family: Ganshin}]
+    birthDate: '1994-09-26'
+    address: [{city: St. Petersburg}]
+    text:
+      status: additional
+      div: Healthy Patient
+  - id: pt-2
+    resourceType: Patient
+    name: [{given: [Anna]}]
+    birthDate: '1994-08-07'
+    address: [{city: Kolpino}]
+    text:
+      status: additional
+      div: Unknown
+  - id: pt-3
+    resourceType: Patient
+    name: [{given: [Ivan]}]
+    address: [{city: Pushkin}]
+    text:
+      status: additional
+      div: In progress
+  match:
+    status: 200
+- id: create-test-list-with-links-on-patients
+  PUT: /List/list-3
+  body:
+    id: list-3
+    resourceType: List
+    status: "Generated"
+    mode: "changes"
+    subject: 
+      resourceType: "Patient"
+      id: "pt-2"
+    entry:
+    - item:
+        resourceType: "Patient"
+        id: "pt-1"
+    - item:
+        resourceType: "Patient"
+        id: "pt-3"
+  match:
+    status: 2xx?
+- id: get-resource-with-a-given-id-and-other-reffering-to-it
+  GET: /Patient #Здесь должен быть ваш запроса
+  match:
+    status: 200
+    body:
+      entry:
+        - resource:
+            id: list-3
+            resourceType: List
+            status: "Generated"
+            mode: "changes"
+            subject: 
+              resourceType: "Patient"
+              id: "pt-2"
+            entry:
+            - item:
+                resourceType: "Patient"
+                id: "pt-1"
+            - item:
+                resourceType: "Patient"
+                id: "pt-3"
+        - resource:
+            id: pt-2
+            resourceType: Patient
+            name: {given: [Anna]}
+            birthDate: '1994-08-07'
+            address: [{city: Kolpino}]
+            text:
+              status: additional
+              div: Unknown
