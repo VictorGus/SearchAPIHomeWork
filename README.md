@@ -4,7 +4,7 @@
 
 Далее нажмите кнопку **New Box** и появится следующее окно:
 
-![alt text]()
+![image](https://user-images.githubusercontent.com/18242717/66373087-72bcc300-e9b0-11e9-8aa4-efcdb59f3ec5.png)
 
 Сначала вам нужно скачать stresty.jar, выполнив следующую команду:
 ```
