@@ -51,6 +51,12 @@ $ export AIDBOX_AUTH_TYPE=Basic
 $ export AIDBOX_CLIENT_ID=<client-id>
 $ export AIDBOX_CLIENT_SECRET=<client-secret>
 ```
+Или можете воспользоваться скриптом setup.sh, предварительно изменив **значения переменных на ваши**
+```
+chmmod +x setup.sh
+./setup.sh
+```
+
 Чтобы запустить Stresty, выполните следующую команду: 
 ```
 $ java -jar stresty.jar <test-file>.yaml
