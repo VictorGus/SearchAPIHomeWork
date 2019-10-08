@@ -1,4 +1,10 @@
+#Здесь необходимо найти пациента с заданным id и всех ссылающихся на него
 steps:
+- id: clean
+  POST: /$sql
+  body: "TRUNCATE Patient"
+  match:
+    status: 200
 - id: create
   PUT: /
   body:
@@ -47,7 +53,7 @@ steps:
   match:
     status: 2xx?
 - id: get-resource-with-a-given-id-and-other-reffering-to-it
-  GET: /Patient #Здесь должен быть ваш запроса
+  GET: /YourQuery #Здесь должен быть ваш запрос
   match:
     status: 200
     body:

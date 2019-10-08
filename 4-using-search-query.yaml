@@ -1,3 +1,4 @@
+#Здесь необходимо дописать Search Query, чтобы при помощи него можно было найти всех молодых пациентов мужчин
 steps:
 - id: clean
   desc: |
@@ -102,20 +103,16 @@ steps:
     and with such params as gender and family.
   PUT: /SearchQuery/q-1
   body:
-    # attach this query to Patient resource type
     resource: {id: 'Patient', resourceType: 'Entity'}
-    # give alias to patient table
     as: pt
-    # enable total query
     total: true 
-    # basic query
     query:
-      where: "(pt.resource->>'birthDate')::date > '1994-01-01'"
+      where: "Your query here"
       order-by: pt.id desc
     params:
       gender:
         type: string
-        where: "pt.resource->>'gender' = {{params.gender}}"
+        where: "Your query here"
       family:
         type: string
         format: '%?%'
@@ -123,3 +120,20 @@ steps:
           aidbox_text_search(knife_extract_text(pt.resource, $$[["name","family"]]$$)) ilike {{params.family}}
   match:
     status: 2xx?
+- id: search-with-gender-param
+  desc: |
+    Search all male young patients.
+  GET: "Use your Search Query resource"
+  match:
+    status: 200
+    body:
+      resourceType: Bundle
+      type: searchset
+      entry:
+      - resource:
+          id: pt-3
+          resourceType: Patient
+      - resource:
+          id: pt-1
+          resourceType: Patient
+      total: 2

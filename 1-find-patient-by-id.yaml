@@ -1,5 +1,13 @@
-
+#Здесь необходимо найти пациента по его id, в данном задании id пациента - pt-1
 steps:
+- id: clean
+  desc: |
+    Clear all patients.
+  POST: /$sql
+  body: |
+    truncate patient;
+  match:
+    status: 200
 - id: create
   desc: Create test patient
   PUT: /Patient
@@ -12,7 +20,7 @@ steps:
       id: pt-1
       name: [{given: ['Ivan']}]
 - id: search-by-id
-  GET: /Patient #Здесь должен быть ваш запрос
+  GET: /YourQuery #Здесь должен быть ваш запрос
   match:
     status: 200
     body:

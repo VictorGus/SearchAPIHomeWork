@@ -1,0 +1,28 @@
+#Здесь вам необходимо найти id последнего добавленного пациента
+steps:
+- id: clean
+  POST: /$sql
+  body: "TRUNCATE Patient"
+  match:
+    status: 200
+- id: create
+  desc: Create test patient
+  PUT: /Patient
+  body:
+    id: pt-1000
+    name: [{given: ['Artem'], family: 'Pupkin'}]
+  match:
+    status: 201
+    body:
+      id: pt-1000
+      name: [{given: ['Artem']}]
+- id: search-by-lastUpdated-param
+  GET: /YourQuery #Здесь должен быть ваш запрос
+  match:
+    status: 200
+    body:
+      entry:
+      - resource:
+           id: 'pt-1000'
+           name: [{given: ['Artem']}]
+
