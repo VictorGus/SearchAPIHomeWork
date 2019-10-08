@@ -18,7 +18,7 @@
 
 ![image](https://user-images.githubusercontent.com/18242717/66373730-fcb95b80-e9b1-11e9-8ec4-8401c82a3766.png)
 
-Вставьте данный ресурс в поле для ввода и нажмите кнопку **Save**:
+Нажмите кнопку **New**, вставьте данный ресурс в поле для ввода и нажмите кнопку **Save**:
 ```yaml
 secret: secret
 grant_types:
@@ -30,7 +30,7 @@ resourceType: Client
 
 ![image](https://user-images.githubusercontent.com/18242717/66374057-cf20e200-e9b2-11e9-9d8a-e39b0c89251f.png)
 
-Вставьте данный ресурс в поле для ввода и нажмите кнопку **Save**:
+Нажмите кнопку **New**, вставьте данный ресурс в поле для ввода и нажмите кнопку **Save**:
 ```yaml
 engine: allow
 id: user-policy
